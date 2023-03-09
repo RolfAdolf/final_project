@@ -10,4 +10,3 @@ class User(Base):
     password_hash = Column(String)
     created_at = Column(DateTime)
     role = Column(String)
-

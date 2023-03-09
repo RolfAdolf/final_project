@@ -102,28 +102,22 @@ class UsersService:
         )
         return user
 
-    def add(self, user_schema: UserRequest, created_user_id: int) -> User:
+    def add(self, user_schema: UserRequest) -> User:
         datetime_ = datetime.utcnow()
         user = User(
             username=user_schema.username,
             password_hash=self.hash_password(user_schema.password_text),
             role=user_schema.role,
-            created_at=datetime_,
-            created_by=created_user_id,
-            modified_at=datetime_,
-            modified_by=created_user_id
+            created_at=datetime_
         )
         self.session.add(user)
         self.session.commit()
         return user
 
-    def update(self, user_id: int, user_schema: UserRequest, modified_user_id: int) -> User:
+    def update(self, user_id: int, user_schema: UserRequest) -> User:
         user = self.get(user_id)
         for field, value in user_schema:
             setattr(user, field, value)
-        datetime_ = datetime.utcnow()
-        setattr(user, 'modified_at', datetime_)
-        setattr(user, 'modified_by', modified_user_id)
         self.session.commit()
         return user
 

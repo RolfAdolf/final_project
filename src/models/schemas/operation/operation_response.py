@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from datetime import datetime
 
 
-class OperationRequest(BaseModel):
+class OperationResponse(BaseModel):
     id: int
     method: str
     called_at: datetime
