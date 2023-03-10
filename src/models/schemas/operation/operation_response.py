@@ -8,3 +8,6 @@ class OperationResponse(BaseModel):
     method: str
     called_at: datetime
     called_by: Optional[int]
+
+    class Config:
+        orm_mode = True

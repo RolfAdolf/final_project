@@ -19,7 +19,10 @@ def convert_types(data: PandasDataFrame) -> PandasDataFrame:
 
 
 def drop_extra_columns(data: PandasDataFrame) -> PandasDataFrame:
-    return data.drop(columns=[list(data.columns)[0], 'Product ID', 'Failure Type', 'Air temperature [K]'])
+    columns = [list(data.columns)[0], 'Product ID', 'Air temperature [K]']
+    if 'Failure Type' in data.columns:
+        columns.append('Failure Type')
+    return data.drop(columns=columns)
 
 
 def categorical_processing(data: PandasDataFrame) -> PandasDataFrame:
@@ -50,14 +53,14 @@ def train_return(
         train_data: PandasDataFrame,
         normalizing: bool = True
         ) -> Dict:
-    x, y = feature_target_return(train)
+    x, y = feature_target_return(train_data)
     if normalizing:
         scaler = scaler_return(x)
         x = scaler.transform(x)
     else:
         scaler = None
     return {
-        "data:": (x, y),
+        "data": (x, y),
         "scaler": scaler
     }
 
@@ -80,6 +83,12 @@ def train_test_return(
     else:
         scaler = None
     return {
-        "data:": (x_train, x_test, y_train, y_test),
+        "data": (x_train, x_test, y_train, y_test),
         "scaler": scaler
     }
+
+def test_return(
+        test: PandasDataFrame
+) -> np.ndarray:
+    x = test.loc[:, test.columns != 'Target'].values
+    return x

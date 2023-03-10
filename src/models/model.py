@@ -7,7 +7,7 @@ from src.models.base import Base
 class Model(Base):
     __tablename__ = 'models'
     id = Column(Integer, primary_key=True)
-    type = Column(String)
+    model_type = Column(String)
     created_by = Column(Integer, ForeignKey('users.id'), nullable=True)
     created_at = Column(DateTime)
 

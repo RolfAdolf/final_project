@@ -1,6 +1,9 @@
 from fastapi import FastAPI
+
 from src.utils.docs import app_docs
 from src.api.base_router import router
+
+
 app = FastAPI(
     title=app_docs.title,
     description=app_docs.description,

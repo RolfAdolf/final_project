@@ -42,7 +42,7 @@ def train(
         x_train, x_test, y_train, y_test = train_data["data"]
     scaler = train_data["scaler"]
 
-    svc_params = {'C': [10*i for i in range(10)]}
+    svc_params = {'C': [1] + [10*i for i in range(1, 10)]}
 
     if test_split == 0:
         model = GridSearchCV(model(), svc_params).fit(x, y)

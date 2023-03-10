@@ -10,6 +10,7 @@ class Settings(BaseSettings):
     jwt_expires_seconds: int
     admin_username: str
     admin_password: str
+    model_expire_seconds: int = 600
 
 
 settings = Settings(
