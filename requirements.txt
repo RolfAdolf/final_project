@@ -7,10 +7,12 @@ alembic
 passlib
 python-jose
 python-multipart
-dash==0.31.1
+dash
 dash-html-components
 dash-core-components
 dash-table
+dash_enterprise_auth
+plotly
 numpy
 notebook
 pandas
