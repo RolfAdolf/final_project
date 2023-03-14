@@ -29,26 +29,37 @@ button_params = {
     "n_clicks": 0,
 }
 
-auth_form_div = html.Div(
-        id="authorization_block",
-        children=[
 
-            html.Form(
-                id="authorization_form",
-                children=[
+def return_auth_form_div(with_error: bool = False):
+    if with_error:
+        username_input_params["style"] = {
+            "border": "2px solid red"
+        }
+        password_input_params["style"] = {
+            "border": "2px solid red"
+        }
 
-                    html.Div(
-                        id="logo_block",
-                        children=[html.Img(src=logo_image_path, id="image_logo")]
-                    ),
+    auth_form_div = html.Div(
+            id="authorization_block",
+            children=[
 
-                    dcc.Input(**username_input_params),
-                    dcc.Input(**password_input_params),
+                html.Form(
+                    id="authorization_form",
+                    children=[
 
-                    html.Button(**button_params)
+                        html.Div(
+                            id="logo_block",
+                            children=[html.Img(src=logo_image_path, id="image_logo")]
+                        ),
 
-                ]
-            )
+                        dcc.Input(**username_input_params),
+                        dcc.Input(**password_input_params),
 
-        ]
-)
+                        html.Button(**button_params)
+
+                    ]
+                )
+
+            ]
+    )
+    return auth_form_div

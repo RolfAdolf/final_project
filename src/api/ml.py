@@ -69,7 +69,7 @@ def get_data(
     data = ml_service.return_data()
     download_file = files_service.download(data)
 
-    operation_schema = OperationRequest({'operation': 'download'})
+    operation_schema = OperationRequest(**{'operation': 'download'})
     operation_service.add(operation_schema, user_id)
 
     return StreamingResponse(download_file, media_type='text/csv',

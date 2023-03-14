@@ -72,6 +72,10 @@
   font-weight: bold;
   background-color: #07a309;
   color: #fff;
+  
+ #sign_button{
+  transform: scale(0.95);
+ }
 
   border: 0px;
 }

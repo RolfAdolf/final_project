@@ -40,7 +40,7 @@ class MLService:
 
     @staticmethod
     def return_data() -> PandasDataFrame:
-        return pd.read_csv("./data/predictive_maintenance.csv")
+        return pd.read_csv("../data/predictive_maintenance.csv")
 
     @staticmethod
     def train(data: PandasDataFrame, model_type: str) -> TrainedModel:

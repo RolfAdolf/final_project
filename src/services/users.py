@@ -36,13 +36,20 @@ class UsersService:
         return pbkdf2_sha256.verify(password_text, password_hash)
 
     @staticmethod
-    def create_token(user_id: int, user_level: str) -> JwtToken:
+    def create_token(user_id: int, user_name: str, user_level: str) -> JwtToken:
         now = datetime.utcnow()
         payload = {
             'iat': now,
             'exp': now + timedelta(seconds=settings.jwt_expires_seconds),
             'sub': str(user_id),
-            'lvl': user_level
+            'lvl': user_level,
+            'context': {
+                "user": {
+                    "key": str(user_id),
+                    "username": user_name
+                },
+            #     "roles": ["admin", "viewer"]
+            }
         }
         token = jwt.encode(payload, settings.jwt_secret, algorithm=settings.jwt_algorithm)
         return JwtToken(access_token=token)
@@ -78,7 +85,7 @@ class UsersService:
         if not self.check_password(password_text, user.password_hash):
             return None
 
-        return self.create_token(user.id, user.role)
+        return self.create_token(user.id, username, user.role)
 
     def all(self) -> List[User]:
         users = (
