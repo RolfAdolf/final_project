@@ -1,4 +1,4 @@
-from dash import html
+from dash import html, dcc
 
 
 preprocess_button_params = {
@@ -43,7 +43,10 @@ logout_button_params = {
 
 def return_office_form_div(
         username: str = "Username",
-        role: str = "viewer"):
+        role: str = "viewer",
+        display: bool = True
+):
+    office_style = {"display": "block" if display else "none"}
     office_form_div = html.Div(
             id="personal_office",
             children=[
@@ -68,12 +71,14 @@ def return_office_form_div(
                         html.Button(**predict_button_params),
                         html.Br(),
                         html.Button(**download_button_params),
+                        dcc.Download(id="download-data")
 
                     ]
                 ),
 
                 html.Button(**logout_button_params)
 
-            ]
+            ],
+            style=office_style
     )
     return office_form_div

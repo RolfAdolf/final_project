@@ -1,5 +1,5 @@
 import requests
-from dash import Dash, Input, Output, State
+from dash import Dash, Input, Output, State, dcc
 
 from copy import copy
 
@@ -44,13 +44,11 @@ def auth_wrapper(n_clicks, login, password):
 
 
 @app.callback(
-    Output(component_id="download_button", component_property="style"),
+    Output(component_id="download-data", component_property="data"),
     Input(component_id="download_button", component_property="n_clicks")
 )
 def download_wrapper(n_clicks: int):
     if n_clicks == 0:
         return
     global access_token
-    download_data(access_token)
-    download_button_params["color"] = "#fff"
-    return download_button_params
+    return dcc.send_data_frame(download_data(access_token), "data.csv")
