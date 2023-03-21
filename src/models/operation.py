@@ -4,11 +4,12 @@ from sqlalchemy.orm import relationship
 
 
 class Operation(Base):
-
-    __tablename__ = 'operations'
+    __tablename__ = "operations"
     id = Column(Integer, primary_key=True)
     operation = Column(String)
     called_at = Column(DateTime)
-    called_by = Column(Integer, ForeignKey('users.id'), nullable=True)
+    called_by = Column(Integer, ForeignKey("users.id"), nullable=True)
 
-    user_called = relationship('User', foreign_keys=[called_by], backref='called_operations')
+    user_called = relationship(
+        "User", foreign_keys=[called_by], backref="called_operations"
+    )

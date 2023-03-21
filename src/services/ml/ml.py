@@ -12,14 +12,13 @@ from src.services.ml.preprocess import full_preprocess, test_return
 from src.services.ml.train import train, ScikitModel
 
 
-PandasDataFrame = TypeVar('pandas.core.frame.DataFrame')
+PandasDataFrame = TypeVar("pandas.core.frame.DataFrame")
 
 
 class TrainedModel:
-    def __init__(self,
-                 trained_model: ScikitModel,
-                 trained_scaler: Optional[object] = None
-                 ):
+    def __init__(
+        self, trained_model: ScikitModel, trained_scaler: Optional[object] = None
+    ):
         self.model = trained_model
         self.scaler = trained_scaler
 
@@ -55,54 +54,27 @@ class MLService:
         return pd.DataFrame({"Target": pred})
 
     def all(self):
-        models = (
-            self.session
-            .query(Model)
-            .order_by(
-                Model.id.desc()
-            )
-            .all()
-        )
+        models = self.session.query(Model).order_by(Model.id.desc()).all()
         return models
 
     def all_user_models(self, user_id: int):
-        models = (
-            self.session
-            .query(Model)
-            .filter(
-                Model.created_by == user_id
-            )
-            .all()
-        )
+        models = self.session.query(Model).filter(Model.created_by == user_id).all()
         return models
 
-    def add(self,
-            model_schema: ModelRequest,
-            created_user_id: int
-            ) -> Model:
+    def add(self, model_schema: ModelRequest, created_user_id: int) -> Model:
         datetime_ = datetime.utcnow()
         model = Model(
-            **model_schema.dict(),
-            created_at=datetime_,
-            created_by=created_user_id
+            **model_schema.dict(), created_at=datetime_, created_by=created_user_id
         )
         self.session.add(model)
         self.session.commit()
         return model
 
-    def get_users_last_model(
-            self,
-            user_id: int
-         ):
+    def get_users_last_model(self, user_id: int):
         model = (
-            self.session
-            .query(Model)
-            .filter(
-                Model.created_by == user_id
-            )
-            .order_by(
-                Model.id.desc()
-            )
+            self.session.query(Model)
+            .filter(Model.created_by == user_id)
+            .order_by(Model.id.desc())
             .first()
         )
         return model

@@ -2,15 +2,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from src.core.settings import settings
 
-engine = create_engine(
-    settings.connection_string
-)
+engine = create_engine(settings.connection_string)
 
-Session = sessionmaker(
-    engine,
-    autocommit=False,
-    autoflush=False
-)
+Session = sessionmaker(engine, autocommit=False, autoflush=False)
 
 
 def get_session():

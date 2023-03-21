@@ -12,33 +12,19 @@ class OperationsService:
         self.session = session
 
     def all(self):
-        operations = (
-            self.session
-            .query(Operation)
-            .order_by(
-                Operation.id.desc()
-            )
-            .all()
-        )
+        operations = self.session.query(Operation).order_by(Operation.id.desc()).all()
         return operations
 
     def get(self, operation_id: int) -> Operation:
         operation = (
-            self.session
-            .query(Operation)
-            .filter(
-                Operation.id == operation_id
-            )
-            .first()
+            self.session.query(Operation).filter(Operation.id == operation_id).first()
         )
         return operation
 
     def add(self, operation_schema: OperationRequest, called_user_id: int) -> Operation:
         datetime_ = datetime.utcnow()
         operation = Operation(
-            **operation_schema.dict(),
-            called_at=datetime_,
-            called_by=called_user_id
+            **operation_schema.dict(), called_at=datetime_, called_by=called_user_id
         )
         self.session.add(operation)
         self.session.commit()

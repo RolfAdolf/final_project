@@ -12,6 +12,7 @@ dash-html-components
 dash-core-components
 dash-table
 dash_enterprise_auth
+dash_extensions
 plotly
 numpy
 notebook

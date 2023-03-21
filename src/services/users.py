@@ -12,7 +12,7 @@ from src.models.user import User
 from src.models.schemas.user.user_request import UserRequest
 from src.models.schemas.utils.jwt_token import JwtToken
 
-oauth2_schema = OAuth2PasswordBearer(tokenUrl='/users/authorize')
+oauth2_schema = OAuth2PasswordBearer(tokenUrl="/users/authorize")
 
 
 def get_current_user_id(token: str = Depends(oauth2_schema)) -> int:
@@ -39,46 +39,48 @@ class UsersService:
     def create_token(user_id: int, user_name: str, user_level: str) -> JwtToken:
         now = datetime.utcnow()
         payload = {
-            'iat': now,
-            'exp': now + timedelta(seconds=settings.jwt_expires_seconds),
-            'sub': str(user_id),
-            'lvl': user_level,
-            'context': {
-                "user": {
-                    "key": str(user_id),
-                    "username": user_name
-                },
-            #     "roles": ["admin", "viewer"]
-            }
+            "iat": now,
+            "exp": now + timedelta(seconds=settings.jwt_expires_seconds),
+            "sub": str(user_id),
+            "lvl": user_level,
+            "context": {
+                "user": {"key": str(user_id), "username": user_name},
+                #     "roles": ["admin", "viewer"]
+            },
         }
-        token = jwt.encode(payload, settings.jwt_secret, algorithm=settings.jwt_algorithm)
+        token = jwt.encode(
+            payload, settings.jwt_secret, algorithm=settings.jwt_algorithm
+        )
         return JwtToken(access_token=token)
 
     @staticmethod
     def verify_token(token: str) -> Optional[int]:
         try:
-            payload = jwt.decode(token, settings.jwt_secret, algorithms=[settings.jwt_algorithm])
+            payload = jwt.decode(
+                token, settings.jwt_secret, algorithms=[settings.jwt_algorithm]
+            )
         except JWTError:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Некорректный токен")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Некорректный токен"
+            )
 
-        return payload.get('sub')
+        return payload.get("sub")
 
     @staticmethod
     def get_role(token: str) -> Optional[int]:
         try:
-            payload = jwt.decode(token, settings.jwt_secret, algorithms=[settings.jwt_algorithm])
+            payload = jwt.decode(
+                token, settings.jwt_secret, algorithms=[settings.jwt_algorithm]
+            )
         except JWTError:
-            raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Некорректный токен")
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED, detail="Некорректный токен"
+            )
 
-        return payload.get('lvl')
+        return payload.get("lvl")
 
     def authorize(self, username: str, password_text: str) -> Optional[JwtToken]:
-        user = (
-            self.session
-            .query(User)
-            .filter(User.username == username)
-            .first()
-        )
+        user = self.session.query(User).filter(User.username == username).first()
 
         if not user:
             return None
@@ -88,25 +90,11 @@ class UsersService:
         return self.create_token(user.id, username, user.role)
 
     def all(self) -> List[User]:
-        users = (
-            self.session
-            .query(User)
-            .order_by(
-                User.id.desc()
-            )
-            .all()
-        )
+        users = self.session.query(User).order_by(User.id.desc()).all()
         return users
 
     def get(self, user_id: int) -> User:
-        user = (
-            self.session
-            .query(User)
-            .filter(
-                User.id == user_id
-            )
-            .first()
-        )
+        user = self.session.query(User).filter(User.id == user_id).first()
         return user
 
     def add(self, user_schema: UserRequest) -> User:
@@ -115,7 +103,7 @@ class UsersService:
             username=user_schema.username,
             password_hash=self.hash_password(user_schema.password_text),
             role=user_schema.role,
-            created_at=datetime_
+            created_at=datetime_,
         )
         self.session.add(user)
         self.session.commit()

@@ -5,7 +5,7 @@ from io import StringIO
 from typing import BinaryIO, TypeVar
 
 
-PandasDataFrame = TypeVar('pandas.core.frame.DataFrame')
+PandasDataFrame = TypeVar("pandas.core.frame.DataFrame")
 
 
 class FilesService:
@@ -16,7 +16,6 @@ class FilesService:
         for row in reader:
             ds.append(row)
         return pd.DataFrame(ds)
-
 
     @staticmethod
     def download(data: PandasDataFrame):

@@ -42,43 +42,29 @@ logout_button_params = {
 
 
 def return_office_form_div(
-        username: str = "Username",
-        role: str = "viewer",
-        display: bool = True
+    username: str = "Username", role: str = "viewer", display: bool = True
 ):
     office_style = {"display": "block" if display else "none"}
     office_form_div = html.Div(
-            id="personal_office",
-            children=[
-
-                html.Div(
-                    id="user_name",
-                    children=username
-                ),
-                html.Div(
-                    id="role",
-                    children=role
-                ),
-
-                html.Div(
-                    id="buttons_div",
-                    children=[
-
-                        html.Button(**preprocess_button_params),
-                        html.Br(),
-                        html.Button(**train_button_params),
-                        html.Br(),
-                        html.Button(**predict_button_params),
-                        html.Br(),
-                        html.Button(**download_button_params),
-                        dcc.Download(id="download-data")
-
-                    ]
-                ),
-
-                html.Button(**logout_button_params)
-
-            ],
-            style=office_style
+        id="personal_office",
+        children=[
+            html.Div(id="user_name", children=username),
+            html.Div(id="role", children=role),
+            html.Div(
+                id="buttons_div",
+                children=[
+                    html.Button(**preprocess_button_params),
+                    html.Br(),
+                    html.Button(**train_button_params),
+                    html.Br(),
+                    html.Button(**predict_button_params),
+                    html.Br(),
+                    html.Button(**download_button_params),
+                    dcc.Download(id="download-data"),
+                ],
+            ),
+            html.Button(**logout_button_params),
+        ],
+        style=office_style,
     )
     return office_form_div
