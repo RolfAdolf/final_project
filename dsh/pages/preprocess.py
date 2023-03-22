@@ -1,11 +1,9 @@
 from dash_extensions.enrich import html, dcc
 
 
-def return_preprocess_data_div(
-    username: str = "Username", display: bool = True
+def layout(
+    username: str = "Username"
 ):
-
-    preprocess_style = {"display": "block" if display else "none"}
 
     preprocess_div = html.Div(
         id="preprocess_div",
@@ -24,8 +22,9 @@ def return_preprocess_data_div(
                             html.Label(
                                 className="input-file",
                                 children=[
-                                    dcc.Upload(),
-                                    html.Span(children="Select a csv-file")
+                                    dcc.Upload(id='upload_to_preprocess'),
+                                    html.Span(children="Select a csv-file"),
+                                    dcc.Download(id="download-preprocessed"),
                                 ]
                             )
 
@@ -36,6 +35,5 @@ def return_preprocess_data_div(
             ),
 
         ],
-        style=preprocess_style,
     )
     return preprocess_div

@@ -1,14 +1,20 @@
-from dash import Dash, dcc, html, Output, Input, State
+# from dash import Dash, dcc, html, Output, Input, State
+from dash_extensions.enrich import DashProxy, dcc, html, Output, Input, State, MultiplexerTransform
 from dash.exceptions import PreventUpdate
 
 import requests
+from typing import Dict, Optional
 
 from dsh.utils.background import background_div
-from dsh.pages import login, office, not_found_404
+from dsh.pages import login, office, not_found_404, preprocess, train
 from dsh.utils.authorize import authorize
+from dsh.utils.download_data import download_data
+from dsh.utils.preprocess_data import preprocess_data
 
 
-app = Dash(name=__name__)
+# app = Dash(name=__name__)
+
+app = DashProxy(name=__name__, transforms=[MultiplexerTransform()])
 
 app.layout = html.Div(
     id='base_layout',
@@ -17,6 +23,9 @@ app.layout = html.Div(
         dcc.Store(id='user_json_data', storage_type='session'),
         html.Div(id='content-container'),
         html.Div(id='login_reference'),
+        html.Div(id='logout_reference'),
+        html.Div(id='preprocess_reference'),
+        html.Div(id='train_reference'),
         dcc.Location(id='url', refresh=False)
     ],
 )
@@ -30,16 +39,23 @@ app.layout = html.Div(
 def display_page(pathname, user_data):
     if user_data is None:
         return login.layout()
-    if not (user_data.get("username", False) and user_data.get("password", False)):
-        return login.layout(with_error=True)
+    if not (user_data.get('username', False) and user_data.get('password', False)):
+        return login.layout()
     else:
-        authorization_result = authorize(user_data["username"], user_data["password"])
-        username, role = authorization_result["username"], authorization_result["role"]
+        try:
+            authorization_result = authorize(user_data["username"], user_data["password"])
+            username, role = authorization_result["username"], authorization_result["role"]
+        except requests.exceptions.HTTPError:
+            return login.layout(with_error=True)
 
     if pathname == '/' or pathname == '/office':
         return office.layout(username, role)
     if pathname == '/login':
         return login.layout()
+    if pathname == '/preprocess':
+        return preprocess.layout(username)
+    if pathname == '/train':
+        return train.layout()
     return not_found_404.layout
 
 
@@ -51,103 +67,98 @@ def display_page(pathname, user_data):
     State(component_id='user_json_data', component_property='data')
 )
 def auth_wrapper(n_clicks, user_login, password, user_data):
-    if n_clicks == 0:
+    if n_clicks is None:
         raise PreventUpdate()
     try:
         query_result = authorize(user_login, password)
 
-        user_data = {}
-        user_data["username"] = query_result['username']
-        user_data["password"] = password
-
-        return user_data, dcc.Location(pathname='/office', id='authorized')
+        return {'username': query_result['username'], 'password': password}, \
+                dcc.Location(pathname='/office', id='authorized')
 
     except requests.exceptions.HTTPError:
-        return user_data, dcc.Location(pathname='/', id='retry_authorization')
+        return {}, dcc.Location(pathname='/login', id='retry_authorization')
 
 
+@app.callback(
+    Output(component_id='download-data', component_property='data'),
+    Input(component_id='download_button', component_property='n_clicks'),
+    State(component_id='user_json_data', component_property='data')
+)
+def download_wrapper(n_clicks: int, user_data):
+    if n_clicks is None:
+        raise PreventUpdate()
+    if user_data is None:
+        return dcc.Location(pathname='/login', id="can't download")
+    if not (user_data.get("username", False) and user_data.get("password", False)):
+        return dcc.Location(pathname='/login', id="can't download")
+    try:
+        user_login, password = user_data["username"], user_data["password"]
+        access_token = authorize(user_login, password)["access_token"]
+
+        return dcc.send_data_frame(download_data(access_token), 'data.csv')
+
+    except requests.exceptions.HTTPError:
+        try:
+            access_token = authorize(user_login, password)["access_token"]
+            return dcc.send_data_frame(download_data(access_token), 'data.csv')
+        except requests.exceptions.HTTPError:
+            return dcc.Location(pathname='/', id='retry_authorization')
 
 
+@app.callback(
+    [Output('user_json_data', 'data'), Output('logout_reference', 'children')],
+    Input(component_id='logout_button', component_property='n_clicks'),
+    State(component_id='user_json_data', component_property='data')
+)
+def log_out(n_clicks: int, user_data: Dict):
+    if n_clicks is None:
+        raise PreventUpdate()
+    return {}, dcc.Location(pathname='/login', id='log_out')
 
 
+@app.callback(
+    Output('preprocess_reference', 'children'),
+    Input('preprocess_button', 'n_clicks')
+)
+def go_preprocess(n_clicks: int):
+    if n_clicks is None:
+        raise PreventUpdate()
+    return dcc.Location(pathname='/preprocess', id='go_preprocess')
 
 
+@app.callback(
+    Output('preprocess_reference', 'children'),
+    Input('back_button', 'n_clicks')
+)
+def back_from_preprocess(n_clicks: int):
+    if n_clicks is None:
+        raise PreventUpdate()
+    return dcc.Location(pathname='/', id='return_from_preprocess')
 
 
+@app.callback(
+    Output(component_id='download-preprocessed', component_property='data'),
+    Input('upload_to_preprocess', 'contents'),
+    State('upload_to_preprocess', 'filename'),
+    State(component_id='user_json_data', component_property='data')
+)
+def download_preprocessed_data(file: Optional[str], filename: str, user_data: Dict):
+    print("FILE PREPROCESS")
+    print(type(file))
+    print(user_data)
+    if file is None:
+        raise PreventUpdate()
+    try:
+        preprocessed_data = preprocess_data(file, filename, user_data['username'], user_data['password'])
+        return dcc.send_data_frame(preprocessed_data, 'preprocessed_data.csv')
+    except requests.exceptions.HTTPError:
+        return dcc.Location(pathname='/office', id='retry_authorization')
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-# @app.callback(
-#     Output(component_id='base', component_property='children'),
-#     Input(component_id='sign_button', component_property='n_clicks'),
-#     State(component_id='username', component_property='value'),
-#     State(component_id='password', component_property='value'),
-# )
-# def auth_wrapper(n_clicks, login, password):
-#     print(n_clicks, login, password)
-#     if n_clicks == 0:
-#         raise PreventUpdate()
-#     try:
-#         query_result = authorize(login, password)
-#
-#         global access_token
-#         global username
-#         global role
-#
-#         access_token, username, role = (
-#             query_result['access_token'],
-#             query_result['username'],
-#             query_result['role'],
-#         )
-#
-#         return [background_div, return_office_form_div(username, role)]
-#     except requests.exceptions.HTTPError:
-#         return [background_div, return_auth_form_div(with_error=True)]
-#
-#
-# @app.callback(
-#     Output(component_id='download-data', component_property='data'),
-#     Input(component_id='download_button', component_property='n_clicks'),
-# )
-# def download_wrapper(n_clicks: int):
-#     print('Download:', n_clicks)
-#     if n_clicks == 0:
-#         raise PreventUpdate()
-#     global access_token
-#     return dcc.send_data_frame(download_data(access_token), 'data.csv')
-#
-#
-# @app.callback(
-#     Output(component_id='base', component_property='children'),
-#     Input(component_id='preprocess_button', component_property='n_clicks')
-# )
-# def preprocess_menu(n_clicks: int):
-#     print('Preprocess:', n_clicks)
-#     if n_clicks == 0:
-#         raise PreventUpdate()
-#     global username
-#     return [background_div, return_preprocess_data_div(username, display=True)]
+@app.callback(
+    Output('train_reference', 'children'),
+    Input('train_button', 'n_clicks')
+)
+def back_from_preprocess(n_clicks: int):
+    if n_clicks is None:
+        raise PreventUpdate()
+    return dcc.Location(pathname='/train', id='go_train')

@@ -1,4 +1,4 @@
-from dash import html, dcc, Input, Output
+from dash_extensions.enrich import html, dcc
 
 
 logo_image_path = "assets/gaz_logo.png"
@@ -26,7 +26,6 @@ button_params = {
     "type": "button",
     "className": "auth_inputs",
     "children": "Sing in",
-    "n_clicks": 0,
 }
 
 

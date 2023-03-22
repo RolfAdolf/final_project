@@ -1,0 +1,104 @@
+
+#block {
+    background:  #04052b;
+  
+    margin-top: 10%;
+    margin-left: 35%;
+    height: 50vh;
+    width: 20%;
+  
+    border-radius: 10%;
+    padding: 50px;
+  }
+  
+  #header {
+      margin-top: 4%;
+      display: flex;
+      flex-direction: row;
+      text-align: center;
+  }
+  
+  #title {
+      font-size: 1.38em;
+      font-weight: 400;
+      font-family: 'Montserrat', sans-serif;
+      color:#fff;
+      margin-top: 6.5%;
+      margin-left: 7%;
+  }
+  
+  
+  button {
+    text-align: left;
+    font-size: 1.45em;
+    font-weight: 500;
+    font-family: 'Montserrat', sans-serif;
+    color: #027ce0;
+    background:  #04052b;
+    border: 0px;
+    margin-bottom: 3.6%;
+  }
+  
+  
+  #import_button {
+      height: 6vh;
+      width: 20vh;
+      background: #4649eb;
+      border-radius: 40px;
+  
+      text-align: center;
+      font-size: 1.1em;
+      font-family: 'Montserrat', sans-serif;
+      color: #fff;
+      margin-top: 1.5%;
+      margin-left: 25%;
+  }
+  
+  #train_button {
+      height: 7vh;
+      width: 30vh;
+      background: #4649eb;
+      border-radius: 40px;
+  
+      text-align: center;
+      font-size: 1.25em;
+      font-family: 'Montserrat', sans-serif;
+      color: #fff;
+  
+      margin-top: 4%;
+      margin-left: 15%;
+  }
+  
+  #import_button:hover {
+      opacity: 0.85;
+  }
+  
+  #train_button:hover {
+      background-color: green;
+      opacity: 0.85;
+  }
+
+  fieldset {
+    font-size: 1em;
+    font-weight: 400;
+    font-family: 'Montserrat', sans-serif;
+    color:#fff;
+    margin-top: 6.5%;
+    margin-left: 7%;
+    margin-top: -1%;
+    border-radius: 8px;
+  }
+
+  #columns {
+    display: flex;
+    flex-direction: row;
+  }
+
+  #second-column {
+    margin-left: 8%;
+  }
+
+  #first-column, #second-column {
+    display: flex;
+    flex-direction: column;
+  }

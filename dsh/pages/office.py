@@ -1,5 +1,4 @@
-import dash
-from dash import html, dcc
+from dash_extensions.enrich import html, dcc
 
 
 preprocess_button_params = {
@@ -7,7 +6,6 @@ preprocess_button_params = {
     "id": "preprocess_button",
     "className": "buttons",
     "children": "Preprocess data",
-    "n_clicks": 0,
 }
 
 train_button_params = {
@@ -15,7 +13,6 @@ train_button_params = {
     "id": "train_button",
     "className": "buttons",
     "children": "Train data",
-    "n_clicks": 0,
 }
 
 predict_button_params = {
@@ -23,7 +20,6 @@ predict_button_params = {
     "id": "predict_button",
     "className": "buttons",
     "children": "Predict data",
-    "n_clicks": 0,
 }
 
 download_button_params = {
@@ -31,7 +27,6 @@ download_button_params = {
     "id": "download_button",
     "className": "buttons",
     "children": "Download data",
-    "n_clicks": 0,
 }
 
 logout_button_params = {
