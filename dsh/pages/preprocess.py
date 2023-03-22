@@ -1,4 +1,4 @@
-from dash import html, dcc
+from dash_extensions.enrich import html, dcc
 
 
 def return_preprocess_data_div(

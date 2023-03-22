@@ -1,4 +1,4 @@
-from dash import html, dcc
+from dash import html, dcc, Input, Output
 
 
 logo_image_path = "assets/gaz_logo.png"
@@ -30,7 +30,7 @@ button_params = {
 }
 
 
-def return_auth_form_div(with_error: bool = False):
+def layout(with_error: bool = False):
     if with_error:
         username_input_params["style"] = {"border": "2px solid red"}
         password_input_params["style"] = {"border": "2px solid red"}

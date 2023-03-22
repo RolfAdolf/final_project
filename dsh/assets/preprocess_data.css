@@ -1,0 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300&display=swap');
+
+#base {
+  position: fixed;
+  top: 0;
+  left: 0;
+  color: blue;
+  background: #0c64e8 url('../assets/back_image.png') no-repeat center center;
+  width: 100vw;
+  height: 100vh;
+  background-size: cover;
+  background-attachment: fixed;
+  opacity: 0.85;
+  z-index: -1;
+}
+
+#preprocess_div {
+  background:  #04052b;
+
+  margin-top: 7%;
+  margin-left: 30%;
+  height: 30vh;
+  width: 30%;
+
+  border-radius: 10%;
+  border: 2px solid grey;
+  padding: 50px;
+}
+
+#preprocess_title{
+  text-align: center;
+  font-size: 2.5em;
+  font-family: 'Montserrat', sans-serif;
+  color: #fff;
+
+  margin-top: 5%;
+}
+
+#preprocess_username {
+  text-align: center;
+  font-size: 1.5em;
+  font-family: 'Montserrat', sans-serif;
+  color: grey;
+}
+
+#input_data{
+  background:  #04052b;
+}
+
+.buttons {
+  text-align: left;
+  font-size: 3em;
+  font-family: 'Montserrat', sans-serif;
+  color: #027ce0;
+
+  background:  #04052b;
+
+  border: 0px;
+}
+
+
+.buttons:hover {
+  color: #fff;
+}
+
+.buttons:active{
+  transform: scale(0.95);
+}
+
+.input-file {
+	position: relative;
+	display: inline-block;
+}
+.input-file span {
+	position: relative;
+	display: inline-block;
+	cursor: pointer;
+	outline: none;
+	text-decoration: none;
+	font-size: 14px;
+	vertical-align: middle;
+	color: rgb(255 255 255);
+	text-align: center;
+	border-radius: 4px;
+	background-color: #419152;
+	line-height: 22px;
+	height: 40px;
+	padding: 10px 20px;
+	box-sizing: border-box;
+	border: none;
+	margin: 0;
+	transition: background-color 0.2s;
+}
+.input-file input[type=file] {
+	position: absolute;
+	z-index: -1;
+	opacity: 0;
+	display: block;
+	width: 0;
+	height: 0;
+}
+
+/* Focus */
+.input-file input[type=file]:focus + span {
+	box-shadow: 0 0 0 0.2rem rgba(0,123,255,.25);
+}
+
+/* Hover/active */
+.input-file:hover span {
+	background-color: #59be6e;
+}
+.input-file:active span {
+	background-color: #2E703A;
+}
+
+/* Disabled */
+.input-file input[type=file]:disabled + span {
+	background-color: #eee;
+}
+
+#preprocess_upload {
+  margin: 10% 0% 35% 35%;
+}
+
+
+#back_button{
+  margin: 0% 0% 0% 0%;
+
+  height: 4.0vh;
+  width: 20%;
+  background:  #04052b;
+
+  border: 0px;
+  border-color: grey;
+  border-radius: 15px;
+
+  text-align: center;
+  font-size: 1.25em;
+  font-family: 'Montserrat', sans-serif;
+  color: #fff;
+}
+
+#back_button:hover{
+  background: #09064f;
+}
+
+#back_button:active{
+  transform: scale(0.95);
+}

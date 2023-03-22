@@ -1,3 +1,4 @@
+import dash
 from dash import html, dcc
 
 
@@ -41,10 +42,7 @@ logout_button_params = {
 }
 
 
-def return_office_form_div(
-    username: str = "Username", role: str = "viewer", display: bool = True
-):
-    office_style = {"display": "block" if display else "none"}
+def layout(username: str, role: str):
     office_form_div = html.Div(
         id="personal_office",
         children=[
@@ -65,6 +63,5 @@ def return_office_form_div(
             ),
             html.Button(**logout_button_params),
         ],
-        style=office_style,
     )
     return office_form_div
