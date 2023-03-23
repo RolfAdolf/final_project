@@ -4,8 +4,28 @@ from dash_iconify import DashIconify
 
 script_src = 'https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js'
 
+logout_button = {
+    'id': 'logout_button',
+    'style': {'margin-left': '25.5%', 'height': '6vh'},
+    'children': 'Log out'
+}
 
-def layout():
+fieldset_style = {
+    'margin-bottom': '5%'
+}
+
+train_button_style_div = {
+    'padding-top': '5%',
+    'margin-left': '-1%',
+    'margin-bottom': '-5%'
+}
+
+if_trained_style = {'display': 'none', 'color': '#2dd61e', 'margin-bottom': '-5%'}
+
+
+def layout(
+    username: str
+):
     train_main_div = html.Div(
         id="train_main_div",
         children=[
@@ -16,11 +36,11 @@ def layout():
                     html.Div(
                         id='header',
                         children=[
-                            html.Button(id='back_button', children='&#8249;'),
-                            html.Div(id='title', children='Train data')
+                            html.Button(id='back_button', children='back'),
+                            html.Div(id='train_title', children='Train data')
                         ]
                     ),
-                    html.Button(id='import_button', children='Import data'),
+                    html.Div(id="preprocess_username", children=username),
 
                     html.Fieldset(
                         id='train_fieldset',
@@ -31,63 +51,61 @@ def layout():
                                 id='columns',
                                 children=[
 
-                                    html.Div(
-                                        id='first-column',
-                                        children=[
-
-                                            html.Div(
-                                                children=[
-                                                    dcc.Input(type='radio', id='XGBoost', name='name'),
-                                                    html.Label(htmlFor='XGBoost', children='XGBoost')
-                                                ]
-                                            ),
-                                            html.Div(
-                                                children=[
-                                                    dcc.Input(type='radio', id='LSTM', name='name'),
-                                                    html.Label(htmlFor='LSTM', children='LSTM')
-                                                ]
-                                            ),
-
-                                        ]
-                                    ),
-                                    html.Div(
-                                        id='second-column',
-                                        children=[
-
-                                            html.Div(
-                                                children=[
-                                                    dcc.Input(type='radio', id='SVM', name='name'),
-                                                    html.Label(htmlFor='SVM', children='SVM')
-                                                ]
-                                            ),
-                                            html.Div(
-                                                children=[
-                                                    dcc.Input(type='radio', id='LogReg', name='name'),
-                                                    html.Label(htmlFor='LogReg', children='LogReg')
-                                                ]
-                                            ),
-
-                                        ]
+                                    dcc.RadioItems([
+                                            {
+                                                "label": html.Span(['SVM'], style={'margin-right': '20%', 'font-size': 20}),
+                                                "value": "SVM",
+                                            },
+                                            {
+                                                "label": html.Span(['XGBoost'], style={'margin-right': '15%', 'font-size': 20}),
+                                                "value": "XGBoost",
+                                            },
+                                            {
+                                                "label": html.Span(['Random forest'], style={'margin-right': '3%', 'font-size': 20}),
+                                                "value": "Forest",
+                                            },
+                                            {
+                                                "label": html.Span(['Logistic regression'], style={'margin-right': '0%', 'font-size': 20}),
+                                                "value": "Log_Reg",
+                                            },
+                                        ],
+                                        value='SVM',
+                                        labelStyle={"display": "flex", "align-items": "center"},
+                                        id='models_radio'
                                     )
 
                                 ]
                             )
 
-                        ]
+                        ],
+                        style=fieldset_style
                     ),
-
-                    html.Button(
-                        id='train_button',
+                    html.Div(id='if_trained', children=html.Label('Model has trained'), style=if_trained_style),
+                    html.Div(
+                        id='train_button_train_div',
                         children=[
-                            DashIconify(
-                                icon="ion:sparkles-outline",
-                                width=30,
+                            dcc.Upload(
+                                id='train_button_train',
+                                children=[
+
+                                    html.Div([
+                                        DashIconify(
+                                            icon="ion:sparkles-outline",
+                                            width=30,
+                                        ),
+                                        html.Label('Train model')
+                                    ],
+                                        style={'padding-top': '5%'}
+                                    )
+
+                                ],
                             ),
-                            html.Span('Train model')
-                        ]
+                            dcc.Download(id="download-preprocessed")
+                        ],
+                        style=train_button_style_div
                     ),
 
-                    html.Button(id='logout_button', style={'margin-top': '3%'}, children='Log out')
+                    html.Button(**logout_button)
 
                 ]
             ),

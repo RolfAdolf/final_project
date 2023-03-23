@@ -2,10 +2,10 @@
 #block {
     background:  #04052b;
   
-    margin-top: 10%;
-    margin-left: 35%;
-    height: 50vh;
-    width: 20%;
+    margin-top: 7%;
+    margin-left: 30%;
+    height: 60vh;
+    width: 30%;
   
     border-radius: 10%;
     padding: 50px;
@@ -18,13 +18,12 @@
       text-align: center;
   }
   
-  #title {
-      font-size: 1.38em;
-      font-weight: 400;
+  #train_title {
+      text-align: center;
+      font-size: 2.5em;
       font-family: 'Montserrat', sans-serif;
-      color:#fff;
-      margin-top: 6.5%;
-      margin-left: 7%;
+      color: #fff;
+      margin: 5% 10% 0% 10%;
   }
   
   
@@ -40,7 +39,7 @@
   }
   
   
-  #import_button {
+  #import_button_import {
       height: 6vh;
       width: 20vh;
       background: #4649eb;
@@ -50,30 +49,31 @@
       font-size: 1.1em;
       font-family: 'Montserrat', sans-serif;
       color: #fff;
-      margin-top: 1.5%;
-      margin-left: 25%;
+      margin-left: 31%;
+      margin-top: 10%;
   }
   
-  #train_button {
+  #train_button_train {
       height: 7vh;
       width: 30vh;
       background: #4649eb;
       border-radius: 40px;
-  
+      padding-right: 3%;
       text-align: center;
       font-size: 1.25em;
       font-family: 'Montserrat', sans-serif;
       color: #fff;
-  
-      margin-top: 4%;
-      margin-left: 15%;
+      
+      margin-top: 5%;
+      margin-left: 24%;
+      margin-bottom: 10%;
   }
   
   #import_button:hover {
       opacity: 0.85;
   }
   
-  #train_button:hover {
+  #train_button_train:hover {
       background-color: green;
       opacity: 0.85;
   }
@@ -85,7 +85,8 @@
     color:#fff;
     margin-top: 6.5%;
     margin-left: 7%;
-    margin-top: -1%;
+    margin-top: 10%;
+    margin-bottom: 0%;
     border-radius: 8px;
   }
 
@@ -102,3 +103,44 @@
     display: flex;
     flex-direction: column;
   }
+
+  #back_button_train{
+  margin: 0% 0% 0% 0%;
+
+  height: 4.0vh;
+  width: 20%;
+  background:  #04052b;
+
+  border: 0px;
+  border-color: grey;
+  border-radius: 15px;
+
+  text-align: center;
+  font-size: 1.25em;
+  font-family: 'Montserrat', sans-serif;
+  color: #fff;
+}
+
+#back_button_train:hover{
+  background: #09064f;
+}
+
+#back_button_train:active{
+  transform: scale(0.95);
+}
+
+#if_trained {
+      height: 3vh;
+      width: 30vh;
+      background: #04052b;
+      border-radius: 40px;
+      padding-right: 3%;
+      text-align: center;
+      font-size: 1em;
+      font-family: 'Montserrat', sans-serif;
+      color: #fff;
+
+      margin-top: 0%;
+      margin-left: 24%;
+      margin-bottom: 0%;
+}

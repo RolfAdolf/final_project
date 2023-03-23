@@ -6,10 +6,12 @@ import requests
 from typing import Dict, Optional
 
 from dsh.utils.background import background_div
-from dsh.pages import login, office, not_found_404, preprocess, train
+from dsh.pages import login, office, not_found_404, preprocess, train, predict
 from dsh.utils.authorize import authorize
 from dsh.utils.download_data import download_data
 from dsh.utils.preprocess_data import preprocess_data
+from dsh.utils.train_model import train_model_request
+from dsh.utils.predict import get_predict_data
 
 
 # app = Dash(name=__name__)
@@ -26,6 +28,7 @@ app.layout = html.Div(
         html.Div(id='logout_reference'),
         html.Div(id='preprocess_reference'),
         html.Div(id='train_reference'),
+        html.Div(id='predict_reference'),
         dcc.Location(id='url', refresh=False)
     ],
 )
@@ -55,7 +58,9 @@ def display_page(pathname, user_data):
     if pathname == '/preprocess':
         return preprocess.layout(username)
     if pathname == '/train':
-        return train.layout()
+        return train.layout(username=username)
+    if pathname == '/predict':
+        return predict.layout(username=username)
     return not_found_404.layout
 
 
@@ -154,6 +159,7 @@ def download_preprocessed_data(file: Optional[str], filename: str, user_data: Di
     except requests.exceptions.HTTPError:
         return dcc.Location(pathname='/office', id='retry_authorization')
 
+
 @app.callback(
     Output('train_reference', 'children'),
     Input('train_button', 'n_clicks')
@@ -162,3 +168,50 @@ def back_from_preprocess(n_clicks: int):
     if n_clicks is None:
         raise PreventUpdate()
     return dcc.Location(pathname='/train', id='go_train')
+
+
+@app.callback(
+    Output(component_id='if_trained', component_property='style'),
+    Input(component_id='train_button_train', component_property='contents'),
+    State(component_id='train_button_train', component_property='filename'),
+    State(component_id='models_radio', component_property='value'),
+    State(component_id='user_json_data', component_property='data')
+)
+def train_model_menu(file: str, filename: str, model_type: str, user_data: Dict):
+    if file is None:
+        raise PreventUpdate()
+    try:
+        train_model_request(file, filename, model_type, user_data['username'], user_data['password'])
+    except requests.exceptions.HTTPError:
+        return dcc.Location(pathname='/login', id='authorization_problems')
+    style = dict(train.if_trained_style)
+    style['display'] = 'block'
+    return style
+
+
+@app.callback(
+    Output('predict_reference', 'children'),
+    Input('predict_button', 'n_clicks')
+)
+def back_from_preprocess(n_clicks: int):
+    if n_clicks is None:
+        raise PreventUpdate()
+    return dcc.Location(pathname='/predict', id='go_predict')
+
+
+@app.callback(
+    Output('download-predictions', 'data'),
+    Input('predict_button_predict', 'contents'),
+    State('predict_button_predict', 'filename'),
+    State('user_json_data', 'data')
+)
+def get_predict(file: str, filename: str, user_data: Dict):
+    if file is None:
+        raise PreventUpdate()
+    try:
+        return dcc.send_data_frame(
+            get_predict_data(file, filename, user_data['username'], user_data['password']),
+            'predictions.csv'
+        )
+    except requests.exceptions.HTTPError:
+        return dcc.Location(pathname='/login', id='authorization_problems')
