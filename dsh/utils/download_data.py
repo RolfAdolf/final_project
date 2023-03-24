@@ -5,7 +5,7 @@ from io import StringIO
 
 from src.core.settings import settings
 
-download_url = f"http://{settings.host}:{settings.port}/ml/download_data"
+download_url = f"http://0.0.0.0:8000/ml/download_data"
 
 
 def send_download_request(access_token: str):

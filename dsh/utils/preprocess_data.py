@@ -11,7 +11,7 @@ from src.core.settings import settings
 from src.services.ml.preprocess import PandasDataFrame
 
 
-preprocess_url = f"http://{settings.host}:{settings.port}/ml/preprocess"
+preprocess_url = f"http://0.0.0.0:8000/ml/preprocess"
 
 
 def graph_from_data(df: PandasDataFrame):

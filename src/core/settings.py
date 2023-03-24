@@ -3,8 +3,8 @@ from pydantic.error_wrappers import ValidationError
 
 
 class Settings(BaseSettings):
-    host: str
-    port: int
+    host: str = '0.0.0.0'
+    port: int = 8000
     db_host: str
     db_port: int
     db_name: str
