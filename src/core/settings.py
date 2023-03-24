@@ -1,9 +1,10 @@
 from pydantic import BaseSettings
 from pydantic.error_wrappers import ValidationError
 
+
 class Settings(BaseSettings):
-    host: str = "localhost"
-    port: int = 9999
+    host: str
+    port: int
     db_host: str
     db_port: int
     db_name: str
