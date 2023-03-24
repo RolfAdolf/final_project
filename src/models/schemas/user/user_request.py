@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from enum import Enum
 
 
-class RoleType(Enum):
+class RoleType(str, Enum):
     admin = "admin"
     viewer = "viewer"
 

@@ -1,5 +1,19 @@
 from dash_extensions.enrich import html, dcc
 
+style_graph = {
+    'display': 'none',
+    'height': '30vh',
+    'width': '15vw',
+    'margin-left': '25%',
+    'margin-top': '-30%',
+}
+
+logout_button = {
+    'id': 'logout_button',
+    'style': {'margin-left': '25%', 'height': '6vh'},
+    'children': 'Log out'
+}
+
 
 def layout(
     username: str = "Username"
@@ -33,6 +47,12 @@ def layout(
 
                 ]
             ),
+            dcc.Graph(
+                id='preprocess_graph',
+                figure={},
+                style=style_graph
+            ),
+            html.Button(**logout_button)
 
         ],
     )

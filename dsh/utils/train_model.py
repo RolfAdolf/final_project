@@ -5,9 +5,10 @@ from io import StringIO
 import base64
 
 from dsh.utils.authorize import authorize
+from src.core.settings import settings
 
 
-preprocess_url = "http://localhost:11000/ml/train_model"
+preprocess_url = f"http://{settings.host}:{settings.port}/ml/train_model"
 
 
 def send_data_to_train(file: str, filename: str, model_type: str, username: str, password: str):

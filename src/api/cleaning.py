@@ -5,6 +5,7 @@ from src.services.utils.models_clearing import CleaningService
 from src.api.ml import trained_models
 from src.core.settings import settings
 
+
 router = APIRouter(prefix="/cleaning", tags=["cleaning"])
 
 

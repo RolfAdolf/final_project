@@ -58,7 +58,7 @@ def layout(
                                             },
                                             {
                                                 "label": html.Span(['XGBoost'], style={'margin-right': '15%', 'font-size': 20}),
-                                                "value": "XGBoost",
+                                                "value": "XGB",
                                             },
                                             {
                                                 "label": html.Span(['Random forest'], style={'margin-right': '3%', 'font-size': 20}),

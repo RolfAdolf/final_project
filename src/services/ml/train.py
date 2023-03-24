@@ -15,6 +15,20 @@ models = {
     "Forest": BaggingClassifier,
 }
 
+parameters_models = {
+    "SVM": {"C": [1] + [10 * i for i in range(1, 11, 3)]},
+    "Log_Reg": {"C": [1] + [10 * i for i in range(1, 11, 3)]},
+    "XGB": {
+                'subsample': [0.9, 1.0],
+                'max_depth': [10]
+             },
+    "Forest": {
+                'n_estimators': [30],
+                'max_samples': [0.9, 1.0],
+                'max_features': [5, 6]
+             },
+}
+
 PandasDataFrame = TypeVar("pandas.core.frame.DataFrame")
 
 
@@ -48,7 +62,7 @@ def train(
         x_train, x_test, y_train, y_test = train_data["data"]
     scaler = train_data["scaler"]
 
-    svc_params = {"C": [1] + [10 * i for i in range(1, 10)]}
+    svc_params = parameters_models[model_type]
 
     if test_split == 0:
         model = GridSearchCV(model(), svc_params).fit(x, y)

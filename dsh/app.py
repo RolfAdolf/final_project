@@ -17,6 +17,8 @@ from dsh.utils.predict import get_predict_data
 # app = Dash(name=__name__)
 
 app = DashProxy(name=__name__, transforms=[MultiplexerTransform()])
+server = app.server
+
 
 app.layout = html.Div(
     id='base_layout',
@@ -107,7 +109,7 @@ def download_wrapper(n_clicks: int, user_data):
             access_token = authorize(user_login, password)["access_token"]
             return dcc.send_data_frame(download_data(access_token), 'data.csv')
         except requests.exceptions.HTTPError:
-            return dcc.Location(pathname='/', id='retry_authorization')
+            return dcc.Location(pathname='/login', id='retry_authorization')
 
 
 @app.callback(
@@ -142,7 +144,11 @@ def back_from_preprocess(n_clicks: int):
 
 
 @app.callback(
-    Output(component_id='download-preprocessed', component_property='data'),
+    [
+        Output(component_id='download-preprocessed', component_property='data'),
+        Output(component_id='preprocess_graph', component_property='style'),
+        Output(component_id='preprocess_graph', component_property='figure'),
+    ],
     Input('upload_to_preprocess', 'contents'),
     State('upload_to_preprocess', 'filename'),
     State(component_id='user_json_data', component_property='data')
@@ -154,8 +160,10 @@ def download_preprocessed_data(file: Optional[str], filename: str, user_data: Di
     if file is None:
         raise PreventUpdate()
     try:
-        preprocessed_data = preprocess_data(file, filename, user_data['username'], user_data['password'])
-        return dcc.send_data_frame(preprocessed_data, 'preprocessed_data.csv')
+        preprocessed_data, graph = preprocess_data(file, filename, user_data['username'], user_data['password'])
+        style = dict(preprocess.style_graph)
+        style['display'] = 'block'
+        return dcc.send_data_frame(preprocessed_data, 'preprocessed_data.csv'), style, graph
     except requests.exceptions.HTTPError:
         return dcc.Location(pathname='/office', id='retry_authorization')
 

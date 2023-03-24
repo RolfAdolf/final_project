@@ -1,15 +1,35 @@
 import pandas as pd
+import plotly.express as px
+import numpy as np
 
 import requests
 from io import StringIO
 import base64
 
 from dsh.utils.authorize import authorize
+from src.core.settings import settings
+from src.services.ml.preprocess import PandasDataFrame
 
-preprocess_url = "http://localhost:11000/ml/preprocess"
+
+preprocess_url = f"http://{settings.host}:{settings.port}/ml/preprocess"
 
 
-def preprocess_data(file: str, filename: str, username: str, password: str):
+def graph_from_data(df: PandasDataFrame):
+    values = [
+        np.sum(df['type_H'].values),
+        np.sum(df['type_L'].values),
+        np.sum(df['type_M'].values)
+    ]
+    names = [
+        'High quality',
+        'Low quality',
+        'Medium quality'
+    ]
+    title = 'Distribution of the product quality'
+    return px.pie(df, values=values, names=names, title=title)
+
+
+def send_preprocess_request(file: str, filename: str, username: str, password: str):
     access_token = authorize(username, password)['access_token']
 
     content_type, content_string = file.split(',')
@@ -18,7 +38,15 @@ def preprocess_data(file: str, filename: str, username: str, password: str):
 
     headers = {"Authorization": f"Bearer {access_token}"}
     request = requests.post(preprocess_url, files={'file': (filename, file.to_csv(), 'text/csv')}, headers=headers)
+    request.raise_for_status()
     data = StringIO(request.text)
 
-    result = pd.read_csv(data, index_col=0)
-    return result.to_csv
+    df = pd.read_csv(data, index_col=0)
+    return df.to_csv, graph_from_data(df)
+
+
+def preprocess_data(*args, **kwargs):
+    try:
+        return send_preprocess_request(*args, **kwargs)
+    except requests.exceptions.HTTPError:
+        return send_preprocess_request(*args, **kwargs)

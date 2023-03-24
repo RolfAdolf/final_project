@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import LabelEncoder
 
 from typing import TypeVar, Tuple, Optional, Dict
 
@@ -37,7 +38,7 @@ def full_preprocess(data: PandasDataFrame) -> PandasDataFrame:
 
 def feature_target_return(data: PandasDataFrame) -> Tuple[PandasDataFrame]:
     x = data.loc[:, data.columns != "Target"].values
-    y = data["Target"].values
+    y = data["Target"].values.astype(int)
     return x, y
 
 

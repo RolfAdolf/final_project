@@ -127,7 +127,9 @@ def predict(
     ml_service: MLService = Depends(),
     operation_service: OperationsService = Depends(),
 ):
+
     model = ml_service.get_users_last_model(user_id)
+
     model = trained_models[model.id]
 
     test_data = files_service.upload(file.file)
