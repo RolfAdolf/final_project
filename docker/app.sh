@@ -2,9 +2,12 @@
 
 cd src
 echo "UPGRADING ALEMBIC"
+pwd
+ls
 alembic upgrade head
 cd ../
 echo "UPGRADING has been finished"
+pwd ls
 
 echo "STARTING CLIENT"
 gunicorn dsh.app:server --bind=0.0.0.0:8050 --daemon
