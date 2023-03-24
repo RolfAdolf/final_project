@@ -1,5 +1,5 @@
 from pydantic import BaseSettings
-
+from pydantic.error_wrappers import ValidationError
 
 class Settings(BaseSettings):
     host: str = "localhost"
@@ -21,9 +21,15 @@ class Settings(BaseSettings):
     connection_string: str = ''
 
 
-settings = Settings(
-    _env_file="../.env",
-    _env_file_encoding="utf-8"
-)
+try:
+    settings = Settings(
+        _env_file="./.env",
+        _env_file_encoding="utf-8"
+    )
+except ValidationError:
+    settings = Settings(
+        _env_file="../.env",
+        _env_file_encoding="utf-8"
+    )
 
 settings.connection_string = f'postgresql://{settings.db_user}:{settings.db_pass}@{settings.db_host}:{settings.db_port}/{settings.db_name}'
