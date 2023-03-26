@@ -48,6 +48,17 @@ def upgrade() -> None:
             }
         ]
     )
+    op.bulk_insert(
+        users,
+        [
+            {
+                'username': 'viewer',
+                'password_hash': UsersService.hash_password('viewer'),
+                'created_at': datetime.now(),
+                'role': 'viewer',
+            }
+        ]
+    )
     # ### end Alembic commands ###
 
 
