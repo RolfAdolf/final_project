@@ -16,28 +16,28 @@ preprocess_url = f"http://0.0.0.0:8000/ml/preprocess"
 
 def graph_from_data(df: PandasDataFrame):
     values = [
-        np.sum(df['type_H'].values),
-        np.sum(df['type_L'].values),
-        np.sum(df['type_M'].values)
+        np.sum(df["type_H"].values),
+        np.sum(df["type_L"].values),
+        np.sum(df["type_M"].values),
     ]
-    names = [
-        'High quality',
-        'Low quality',
-        'Medium quality'
-    ]
-    title = 'Distribution of the product quality'
+    names = ["High quality", "Low quality", "Medium quality"]
+    title = "Distribution of the product quality"
     return px.pie(df, values=values, names=names, title=title)
 
 
 def send_preprocess_request(file: str, filename: str, username: str, password: str):
-    access_token = authorize(username, password)['access_token']
+    access_token = authorize(username, password)["access_token"]
 
-    content_type, content_string = file.split(',')
+    content_type, content_string = file.split(",")
     decoded = base64.b64decode(content_string)
-    file = pd.read_csv(StringIO(decoded.decode('utf-8')), index_col=0)
+    file = pd.read_csv(StringIO(decoded.decode("utf-8")), index_col=0)
 
     headers = {"Authorization": f"Bearer {access_token}"}
-    request = requests.post(preprocess_url, files={'file': (filename, file.to_csv(), 'text/csv')}, headers=headers)
+    request = requests.post(
+        preprocess_url,
+        files={"file": (filename, file.to_csv(), "text/csv")},
+        headers=headers,
+    )
     request.raise_for_status()
     data = StringIO(request.text)
 

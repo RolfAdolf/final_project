@@ -37,7 +37,11 @@ def get_all(
     return ml_service.all()
 
 
-@router.get("/all_mine", response_model=List[ModelResponse], name="Получить все модели пользователя")
+@router.get(
+    "/all_mine",
+    response_model=List[ModelResponse],
+    name="Получить все модели пользователя",
+)
 def get_mine(
     ml_service: MLService = Depends(), user_id: str = Depends(get_current_user_id)
 ):
@@ -127,7 +131,6 @@ def predict(
     ml_service: MLService = Depends(),
     operation_service: OperationsService = Depends(),
 ):
-
     model = ml_service.get_users_last_model(user_id)
 
     model = trained_models[model.id]

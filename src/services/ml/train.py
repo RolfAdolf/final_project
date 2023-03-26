@@ -18,15 +18,8 @@ models = {
 parameters_models = {
     "SVM": {"C": [1] + [10 * i for i in range(1, 11, 3)]},
     "Log_Reg": {"C": [1] + [10 * i for i in range(1, 11, 3)]},
-    "XGB": {
-                'subsample': [0.9, 1.0],
-                'max_depth': [10]
-             },
-    "Forest": {
-                'n_estimators': [30],
-                'max_samples': [0.9, 1.0],
-                'max_features': [5, 6]
-             },
+    "XGB": {"subsample": [0.9, 1.0], "max_depth": [10]},
+    "Forest": {"n_estimators": [30], "max_samples": [0.9, 1.0], "max_features": [5, 6]},
 }
 
 PandasDataFrame = TypeVar("pandas.core.frame.DataFrame")
