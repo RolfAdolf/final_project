@@ -26,7 +26,7 @@ button_params = {
     "type": "button",
     "className": "auth_inputs",
     "children": "Sign in",
-    "text-align": "center",
+    "textAlign": "center",
 }
 
 
