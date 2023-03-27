@@ -25,7 +25,8 @@ button_params = {
     "id": "sign_button",
     "type": "button",
     "className": "auth_inputs",
-    "children": "Sing in",
+    "children": "Sign in",
+    "text-align": "center",
 }
 
 
