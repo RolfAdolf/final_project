@@ -4,7 +4,7 @@ import json
 
 from src.core.settings import settings
 
-url = f"http://{settings.host}:{settings.port}/users/authorize"
+url = f"http://0.0.0.0:11000/users/authorize"
 
 
 def authorize(login: str, password: str):
