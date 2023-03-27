@@ -8,7 +8,7 @@ from dsh.utils.authorize import authorize
 from src.core.settings import settings
 
 
-preprocess_url = f"http://0.0.0.0:8000/ml/predict"
+preprocess_url = f"http://{settings.host}:{settings.port}/ml/predict"
 
 
 def send_predict_request(file: str, filename: str, username: str, password: str):

@@ -8,7 +8,7 @@ from dsh.utils.authorize import authorize
 from src.core.settings import settings
 
 
-preprocess_url = f"http://0.0.0.0:8000/ml/train_model"
+preprocess_url = f"http://{settings.host}:{settings.port}/ml/train_model"
 
 
 def send_data_to_train(
