@@ -65,10 +65,11 @@ gunicorn dsh.app:server --bind=0.0.0.0:8000
 ## Docker
 Для запуска можно воспользовать docker-compose:
 ```bash
-git clone https://github.com/RolfAdolf/final_project.
-cp $PATH_TO_ENV/.env ./final_project
+git clone https://github.com/RolfAdolf/final_project.git
 cd final_project
+
 docker compose build
+
 docker compose up
 ```
 ***
