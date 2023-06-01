@@ -42,7 +42,7 @@ POSTGRES_PASSWORD=
 JWT_SECRET=
 JWT_ALGORITHM=
 JWT_EXPIRES_SECONDS=
-#Пользователь создаваемый по умолчанию
+# Супер пользователь
 ADMIN_USERNAME=
 ADMIN_PASSWORD=
 # Время жизни модели
