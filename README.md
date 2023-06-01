@@ -7,6 +7,21 @@
 способны значительно улучшить реальные показатели производительности.
 
 ***
+
+
+# Установка и запуск
+
+Уставите все зависимости в виртуальной среде:
+```commandLine
+git clone https://github.com/RolfAdolf/final_project.git
+cd final_project
+
+python3 -m venv venv
+source venv/bin/activate
+
+pip install -r requirements.txt
+```
+
 ### .env-файл
 Файл окружения должен находиться в корневой папке проекта `final_project/` и иметь вид
 ```bash
