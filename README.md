@@ -48,7 +48,21 @@ ADMIN_PASSWORD=
 # Время жизни модели
 MODEL_EXPIRE_SECONDS=
 ```
+
+### Alembic 
+```bash
+cd src
+alembic upgrade head
+```
+
 ### Запуск
+```bash
+gunicorn src.app:app --workers 1 --daemon --worker-class uvicorn.workers.UvicornWorker --bind=0.0.0.0:11000
+
+gunicorn dsh.app:server --bind=0.0.0.0:8000
+```
+
+## Docker
 Для запуска можно воспользовать docker-compose:
 ```bash
 git clone https://github.com/RolfAdolf/final_project.
