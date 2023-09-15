@@ -1,17 +1,15 @@
 # FastAPI ML
-Проект является реализацией API с использованием фреймворка FastAPI. Позволяет работать с моделями машинного обучения, скачивать данные с сервера, совершать обучение и проверять модели на собственных тестовых данных.
+The project is an API implementation using the FastAPI framework. Allows you to work with machine learning models, download data from the server, perform training and test models on your own test data.
 
-# Мотивация
-Часто в процессе работы некоторых сервисов возникает большое количество хорошо структурированных данных. 
-Они могут быть использованы для формирования моделей машинного обучения, которые при правильном применении
-способны значительно улучшить реальные показатели производительности.
+# Motivation
+Often, in the course of some services, a large amount of well-structured data arises. They can be used to form machine learning models, which, if applied correctly, can significantly improve real performance indicators.
 
 ***
 
 
-# Установка и запуск
+# Installation and launch
 
-Уставите все зависимости в виртуальной среде:
+Install all dependencies in a virtual environment:
 ```commandLine
 git clone https://github.com/RolfAdolf/final_project.git
 cd final_project
@@ -23,29 +21,28 @@ pip install -r requirements.txt
 ```
 
 ### .env-файл
-Файл окружения должен находиться в корневой папке проекта `final_project/` и иметь вид
+The environment file should be located in the root folder of the project `final_project/` and have the form as below
 ```bash
-# Параметры развёртывания API
 HOST= 
 PORT=
-# Параметры подключения к базе данных
+
 DB_HOST=
 DB_PORT=
 DB_NAME=
 DB_USER=
 DB_PASS=
-# Параметры создания базы данных (только для docker-compose)
+
 POSTGRES_DB=
 POSTGRES_USER=
 POSTGRES_PASSWORD=
-# Параметры атворизации
+
 JWT_SECRET=
 JWT_ALGORITHM=
 JWT_EXPIRES_SECONDS=
-# Супер пользователь
+
 ADMIN_USERNAME=
 ADMIN_PASSWORD=
-# Время жизни модели
+
 MODEL_EXPIRE_SECONDS=
 ```
 
@@ -55,7 +52,7 @@ cd src
 alembic upgrade head
 ```
 
-### Запуск
+### Launch
 ```bash
 gunicorn src.app:app --workers 1 --daemon --worker-class uvicorn.workers.UvicornWorker --bind=0.0.0.0:11000
 
@@ -63,7 +60,7 @@ gunicorn dsh.app:server --bind=0.0.0.0:8000
 ```
 
 ## Docker
-Для запуска можно воспользовать docker-compose:
+To start, you can use docker-compose:
 ```bash
 git clone https://github.com/RolfAdolf/final_project.git
 cd final_project
@@ -75,10 +72,10 @@ docker compose up
 
 ***
 
-По всем вопросам обращаться:
+For all questions and suggestions, please contact:
 
 
 `Telegram`: @Nadir_Devrishev
 
 
-`Mail`: n.devrishev@gmail.com
+`Email`: nadir.dewrishew@gmail.com
